@@ -23,6 +23,8 @@
 * kayen
 * harper
 * angelos
+* gordon
+* todd
 
 
 
@@ -33,6 +35,8 @@ Estimate of time needed to complete: 6 hours
 
 Start time: 2:30 pm
 
-Finish time: _____
+Finish time: 12:15 am
 
-Actual time needed to complete: _____
+Actual time needed to complete: TBD
+
+![alt text](wrrclab7.png)
