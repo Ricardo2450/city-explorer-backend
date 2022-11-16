@@ -6,7 +6,7 @@ console.log('my first server');
 // In our servers, we have to use 'require instead of 'import'
 // Here we will list the requirments for a server
 const express = require('express');
-let weatherData = require('./weather.json');
+let weatherData = require('./data/weather.json');
 // const axios = require('axios');
 
 
@@ -38,27 +38,40 @@ const PORT = process.env.PORT || 3002;
 // create a basic default route
 // app.get() correlates to axios.get()
 // app.get() takes in a parament or url in quotes, and callback function
-app.get('/', (request, response) => {
-  response.send('hello from our server');
-});
+// app.get('/', (request, response) => {
+//   response.send('hello from our server');
+// });
 
-app.get('/weather', (request, response) => {
+app.get('/weather', (request, response, next) => {
   try {
-    let city = request.query.cityName;
-    
-    let selectedCity = weatherData.find(weather => weather.city_name === city);
-    // let selectedCity = weatherData.find(city => city.city_name === cityName);
+    let lat = request.query.lat;
+    let lon = request.query.lon;
+    let city_nameRequest = request.query.city_name;
 
-    if (selectedCity === undefined){
-      throw(500);
+    let selectedCity = weatherData.find(weather => weather.city_name === city_nameRequest);
+    // let selectedCity = weatherData.find(city => city.city_name === cityName);
+    console.log('selcetedCity', selectedCity);
+    if (selectedCity === undefined) {
+      response.status(500).send('Error. City not in data bank.');
+      // throw(500);
     }
+    // let filterCity = new Forecast(selectedCity);
+    // response.send(filterCity);
+
+    // let searchQuary = weatherData.filter(city => (city.lat === lat && city.lon === lon));
+
+    // let searchQuary = weatherData.filter(city => (city.lat === lat && city.lon === lon));
+    // searchQuary.length < 1 ? response.status(500).send('Error. City not in data bank.') : response.status(200).send(searchQuary);
+
+
 
     let cityCleanedUp = [];
 
-    for(let i = 0; i < selectedCity.data.length;i++){
-      cityCleanedUp.push(new Forecast(selectedCity,i));
+    for (let i = 0; i < selectedCity.data.length; i++) {
+      cityCleanedUp.push(new Forecast(selectedCity.data[i]));
     }
-
+    console.log(cityCleanedUp);
+    
     response.send(cityCleanedUp);
   } catch (error) {
     next(error);
@@ -90,8 +103,6 @@ app.get('/weather', (request, response) => {
 //   next(error);
 // }
 
-// let filterCity = new locationsForecast(selectedCity);
-// response.send(filterCity);
 
 // let searchQuary = weatherData.filter(city => (city.lat === lat && city.lon === lon && city.cityName === cityName));
 // searchQuary.length < 1 ? response.status(500).send('Error. City not in data bank.') : response.status(200).send(searchQuary);
@@ -100,7 +111,9 @@ app.get('/weather', (request, response) => {
 
 // let locationSearch = new locationsForecast(searchQuary);
 // response.send(locationSearch);
-
+app.get('/', (request, response) => {
+  response.send('hello from our server');
+});
 
 app.get('*', (request, response) => {
   response.send('That route does not exist');
@@ -126,8 +139,8 @@ app.use((error, request, response, next) => {
 // }
 
 class Forecast {
-  constructor(weatherday) {
-    this.date = weatherday.valid_date;
+  constructor(weatherDay) {
+    this.date = weatherDay.valid_date;
     this.description = weatherDay.weather.description;
   }
 }
