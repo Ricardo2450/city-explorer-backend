@@ -36,8 +36,21 @@ Estimate of time needed to complete: 6 hours
 
 Start time: 2:30 pm
 
-Finish time: 12:15 am
+Finish time: 6:30 pm the next day
+
+Actual time needed to complete: 16 hours
+
+![alt text](wrrclab7.png)
+
+
+Name of feature: lab 8- APIs
+
+Estimate of time needed to complete: 5 hours
+
+Start time: 7:00 pm
+
+Finish time: 9:00 pm
 
 Actual time needed to complete: TBD
 
-![alt text](wrrclab7.png)
+![alt text](wrrclab8.png)
