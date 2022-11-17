@@ -15,6 +15,7 @@ let weatherData = require('./data/weather.json');
 require('dotenv').config();
 
 const cors = require('cors');
+const axios = require('axios');
 
 // USE
 // once we have required something , we have to use it
@@ -43,26 +44,22 @@ const PORT = process.env.PORT || 3002;
 // });
 
 app.get('/weather', (request, response, next) => {
+  console.log('Hi from the weather endpoint');
   try {
     let lat = request.query.lat;
     let lon = request.query.lon;
-    let city_nameRequest = request.query.city_name;
+    // let city_nameRequest = request.query.city_name;
 
-    let selectedCity = weatherData.find(weather => weather.city_name === city_nameRequest);
+    // let selectedCity = weatherData.find(weather => weather.city_name === city_nameRequest);
+    // console.log('selcetedCity', selectedCity);
+
+
+
     // let selectedCity = weatherData.find(city => city.city_name === cityName);
-    console.log('selcetedCity', selectedCity);
-    if (selectedCity === undefined) {
-      response.status(500).send('Error. City not in data bank.');
-      // throw(500);
-    }
-    // let filterCity = new Forecast(selectedCity);
-    // response.send(filterCity);
 
-    // let searchQuary = weatherData.filter(city => (city.lat === lat && city.lon === lon));
-
-    // let searchQuary = weatherData.filter(city => (city.lat === lat && city.lon === lon));
-    // searchQuary.length < 1 ? response.status(500).send('Error. City not in data bank.') : response.status(200).send(searchQuary);
-
+    let weatherResults = await.get(`http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=3&lat=${lat}&lon=${lon}`);
+    let forecast = weatherResults.data.data.map( obj => new Forecast(obj));
+    response.send(forecast);
 
 
     let cityCleanedUp = [];
@@ -73,6 +70,20 @@ app.get('/weather', (request, response, next) => {
     console.log(cityCleanedUp);
     
     response.send(cityCleanedUp);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/movie', async (request, response, next) => {
+  try{
+    let searchedCity = request.query. ? ;
+    let movieResults = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${searchedCity}`);
+    
+    // make a list of top five movie results
+    let topFiveMovies = ?
+    response.send(topFiveMovies);
+    
   } catch (error) {
     next(error);
   }
@@ -145,6 +156,12 @@ class Forecast {
   }
 }
 
+class Movie{
+  constructor(object) {
+    this.releaseDate = object.release_date;
+    this.title = object.title;
+  }
+}
 
 // class Photo {
 //   constructor(picObj) {
