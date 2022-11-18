@@ -49,8 +49,20 @@ Estimate of time needed to complete: 5 hours
 
 Start time: 7:00 pm
 
-Finish time: 9:00 pm
+Finish time: 8:30 pm
+
+Actual time needed to complete: 13 hours
+
+![alt text](wrrclab8.png)
+
+Name of feature: lab 9- Refactoring into Modules
+
+Estimate of time needed to complete: TBD
+
+Start time: TBD
+
+Finish time: TBD
 
 Actual time needed to complete: TBD
 
-![alt text](wrrclab8.png)
+![alt text](wrrclab9.png)
