@@ -6,6 +6,7 @@ let cache = require('./cache.js');
 module.exports = getWeather;
 
 function getWeather(lat, lon) {
+  // key is for cache
   const key = 'weather-' + lat + lon;
   const weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}&days=3`;
 
