@@ -2,8 +2,11 @@
 
 const axios = require('axios');
 let cache = require('./cache.js');
+require ('dotenv').config();
 
-function getMovies(selectedCity) {
+
+async function getMovies(selectedCity) {
+  console.log('hi in movie.js be');
   let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&language=en-US&query=${selectedCity}&page=1&include_adult=false`;
   let key = `movies-${selectedCity}`;
   if (cache[key] && (Date.now() - cache[key].timestamp < 10000)) {
@@ -12,17 +15,19 @@ function getMovies(selectedCity) {
     console.log('Cache miss - movies');
     cache[key] = {};
     cache[key].timestamp = Date.now();
-    cache[key].data = axios.get(movieURL)
+    cache[key].data = await axios.get(movieURL)
       .then(res => {
         return parseMovies(res.data);
       });
   }
+  console.log(cache[key].data);
   return cache[key].data;
 }
 
 function parseMovies(movieResults) {
   try {
-    const movies = movieResults.data.results.map(obj => {
+    console.log(movieResults.results);
+    const movies = movieResults.results.map(obj => {
       return new Movie(obj);
     });
     let topFiveMovies = movies.slice(0, 5);

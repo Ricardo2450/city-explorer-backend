@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv');
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
@@ -10,16 +10,17 @@ const getMovies = require('./modules/movie');
 
 const app = express();
 app.use(cors());
+const PORT = process.env.PORT || 3002;
 
 app.get('/weather', weatherHandler);
 app.get('/movies', movieHandler);
 
-const PORT = process.env.PORT || 3002;
 
 function weatherHandler(request, response) {
   // const { lat, lon } = request.query;
   const lat = request.query.lat;
   const lon = request.query.lon;
+  console.log(request.query);
   getWeather(lat, lon)
     .then(summaries => response.send(summaries))
     .catch((error) => {
@@ -29,6 +30,7 @@ function weatherHandler(request, response) {
 }
 
 function movieHandler(req, res) {
+  console.log('1');
   const selectedCity = req.query.selectedCity;
   getMovies(selectedCity)
     .then(movies => res.send(movies))
