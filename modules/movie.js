@@ -5,6 +5,7 @@ let cache = require('./cache.js');
 
 function getMovies(selectedCity) {
   let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&language=en-US&query=${selectedCity}&page=1&include_adult=false`;
+  console.log(movieURL);
   let key = `movies-${selectedCity}`;
   if (cache[key] && (Date.now() - cache[key].timestamp < 10000)) {
     console.log('Cache hit - movies');
@@ -21,10 +22,12 @@ function getMovies(selectedCity) {
 }
 
 function parseMovies(movieResults) {
+  console.log('Hi');
   try {
-    const movies = movieResults.data.results.map(obj => {
+    const movies = movieResults.results.map(obj => {
       return new Movie(obj);
     });
+    console.log(movies);
     let topFiveMovies = movies.slice(0, 5);
     return Promise.resolve(topFiveMovies);
   } catch (e) {
